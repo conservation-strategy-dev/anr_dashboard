@@ -1,0 +1,1976 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANR Cost-Benefit Analysis</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        :root {
+            --primary-dark: #264653;
+            --primary-teal: #2a9d8f;
+            --secondary-orange: #e76f51;
+            --accent-yellow: #e9c46a;
+            --light-cream: #f4a261;
+            --background: #f8fffe;
+            --card-bg: #ffffff;
+            --text-primary: #264653;
+            --text-secondary: #2a9d8f;
+            --text-light: #6b7280;
+            --border-color: rgba(42, 157, 143, 0.2);
+            --shadow: 0 10px 25px -5px rgba(38, 70, 83, 0.1), 0 10px 10px -5px rgba(38, 70, 83, 0.04);
+            --shadow-lg: 0 20px 50px -12px rgba(38, 70, 83, 0.25);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--background) 0%, #e8f5f3 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary-teal) 50%, var(--accent-yellow) 100%);
+        }
+
+        .header-icon {
+            font-size: 3rem;
+            color: var(--primary-teal);
+            margin-bottom: 1rem;
+            display: inline-block;
+            animation: plantGrow 3s ease-in-out infinite;
+        }
+
+        @keyframes plantGrow {
+            0% { transform: scale(1) rotate(-2deg); }
+            25% { transform: scale(1.05) rotate(1deg); }
+            50% { transform: scale(1.1) rotate(-1deg); }
+            75% { transform: scale(1.05) rotate(2deg); }
+            100% { transform: scale(1) rotate(-2deg); }
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .controls-section {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 2rem;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        select, input[type="number"] {
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            background: var(--background);
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        /* Toggle Switch Styling */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: #ccc;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-switch.active {
+            background: var(--primary-teal);
+        }
+
+        .toggle-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-switch.active .toggle-slider {
+            transform: translateX(30px);
+        }
+
+        .toggle-label {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            user-select: none;
+        }
+
+        /* Hide original checkbox */
+        input[type="checkbox"].toggle-input {
+            display: none;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+            accent-color: var(--primary-teal);
+            cursor: pointer;
+        }
+
+        select:focus, input[type="number"]:focus {
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.1);
+            transform: translateY(-1px);
+        }
+
+        select:hover, input[type="number"]:hover {
+            border-color: var(--primary-teal);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .main-chart {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .main-chart::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-teal) 0%, var(--accent-yellow) 100%);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chart-title::before {
+            content: '📊';
+            font-size: 1.1rem;
+        }
+
+        .indicators-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .indicator-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .indicator-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .indicator-card.npv {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9f7 100%);
+            border-left: 4px solid var(--primary-teal);
+        }
+
+        .indicator-card.irr {
+            background: linear-gradient(135deg, #ffffff 0%, #fef7f0 100%);
+            border-left: 4px solid var(--light-cream);
+        }
+
+        .indicator-card.bcr {
+            background: linear-gradient(135deg, #ffffff 0%, #fff4f0 100%);
+            border-left: 4px solid var(--secondary-orange);
+        }
+
+        .indicator-card.breakeven {
+            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+            border-left: 4px solid var(--primary-teal);
+        }
+
+        .indicator-card.breakeven .indicator-value {
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        .indicator-value {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-teal) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .indicator-label {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .model-info {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-teal) 100%);
+            color: rgb(255, 255, 255);
+            padding: 2rem;
+            border-radius: 16px;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .model-info::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .model-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .model-info h3::before {
+            content: '🌱';
+            font-size: 1rem;
+        }
+
+        .model-info p {
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .model-info strong {
+            color: var(--accent-yellow);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 550px;
+            margin-top: 1rem;
+        }
+
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .loading::before {
+            content: '🌿';
+            font-size: 2rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+        }
+
+        .error {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #dc2626;
+            padding: 1rem;
+            border-radius: 12px;
+            border-left: 4px solid #dc2626;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .indicators-panel {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .controls-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .indicators-panel {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .chart-container {
+                height: 300px;
+            }
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--background);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-teal);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Custom Chart.js tooltip styling - BALANCED VERSION */
+        .chartjs-tooltip {
+            opacity: 1;
+            position: absolute;
+            background: rgba(38, 70, 83, 0.97);
+            color: white;
+            border-radius: 12px;
+            border: 2px solid #2a9d8f;
+            padding: 20px;
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            transition: all .2s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 400;
+            line-height: 1.6;
+            min-width: 500px;
+            max-width: 650px;
+            min-height: 300px;
+            max-height: 600px;
+            overflow-y: auto;
+            box-shadow: 0 15px 40px -5px rgba(38, 70, 83, 0.5);
+            z-index: 10000;
+        }
+
+        .chartjs-tooltip .tooltip-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #e9c46a;
+        }
+
+        .chartjs-tooltip .tooltip-section {
+            margin-bottom: 8px;
+        }
+
+        .chartjs-tooltip .tooltip-section-title {
+            font-weight: 600;
+            color: #2a9d8f;
+            margin-bottom: 4px;
+        }
+
+        .chartjs-tooltip .tooltip-item {
+            margin-left: 10px;
+            margin-bottom: 2px;
+        }
+
+        .chartjs-tooltip .tooltip-total {
+            font-weight: bold;
+            color: #e9c46a;
+            margin-left: 10px;
+            border-top: 1px solid rgba(42, 157, 143, 0.3);
+            padding-top: 4px;
+            margin-top: 4px;
+        }
+
+        /* Tooltip scrollbar styling */
+        .chartjs-tooltip::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chartjs-tooltip::-webkit-scrollbar-track {
+            background: rgba(42, 157, 143, 0.1);
+            border-radius: 2px;
+        }
+
+        .chartjs-tooltip::-webkit-scrollbar-thumb {
+            background: rgba(42, 157, 143, 0.6);
+            border-radius: 2px;
+        }
+
+        .chartjs-tooltip::-webkit-scrollbar-thumb:hover {
+            background: rgba(42, 157, 143, 0.8);
+        }
+
+        /* Selection styling */
+        ::selection {
+            background: rgba(42, 157, 143, 0.2);
+            color: var(--primary-dark);
+        }
+
+        /* Footer styling */
+        .footer {
+            margin-top: 4rem;
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+            background: var(--card-bg);
+        }
+
+        .footer p {
+            margin-bottom: 1rem;
+            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .footer .logo-link {
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .footer .logo-link:hover {
+            transform: scale(1.05);
+        }
+
+        .footer .logo-link img {
+            height: 100px;
+            width: auto;
+        }
+
+        /* Price controls styling */
+        .price-controls {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .price-controls h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .price-section {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .price-input-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 120px;
+        }
+
+        .price-input-group label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+        }
+
+        .price-input-group input {
+            padding: 0.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            background: white;
+            transition: border-color 0.3s ease;
+        }
+
+        .price-input-group input:focus {
+            outline: none;
+            border-color: var(--primary-teal);
+            box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.1);
+        }
+
+        .price-section-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-right: 1rem;
+            min-width: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>ANR Cost-Benefit Analysis</h1>
+            <p class="subtitle">Interactive Analysis Dashboard for Assisted Natural Regeneration (ANR) Models</p>
+        </div>
+
+        <div class="controls-section">
+            <h3 style="color: var(--text-primary); margin-bottom: 1.5rem; font-size: 1.2rem; font-weight: 600; text-align: center;">
+                🌱 Model Selection
+            </h3>
+            <div class="controls-grid">
+                <div class="form-group">
+                    <label for="modelSelect">ANR Model</label>
+                    <select id="modelSelect" onchange="updateModel()">
+                        <option value="">Select a model...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="densityInput">Density (% of base)</label>
+                    <input type="number" id="densityInput" value="30" min="1" max="100" onchange="updateDensity()">
+                </div>
+                
+                <div class="form-group">
+                    <label for="discountRate">Discount Rate (%)</label>
+                    <input type="number" id="discountRate" value="10" min="0" max="30" step="1" onchange="updateAnalysis()">
+                </div>
+                
+                <div class="form-group">
+                    <div class="toggle-container">
+                        <span class="toggle-label">Include Carbon Benefits</span>
+                        <input type="checkbox" id="includeCarbon" class="toggle-input" checked onchange="updateAnalysis()">
+                        <div class="toggle-switch active" onclick="toggleCarbonSwitch()" id="carbonToggle">
+                            <div class="toggle-slider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Price Controls Section -->
+        <div class="price-controls" id="priceControls" style="display: none;">
+            <h3>🏷️ Price Settings</h3>
+            
+            <!-- NTFP Prices -->
+            <div class="price-section">
+                <div class="price-section-title">NTFP Products:</div>
+                <div class="price-input-group">
+                    <label for="ntfpPrice">Initial Price ($/unit)</label>
+                    <input type="number" id="ntfpPrice" step="0.01" min="0" value="0" onchange="updatePrices()">
+                    <small id="ntfpCurrentPrice" style="color: #6b7280; font-size: 11px;">Current: $0.00</small>
+                </div>
+                <div class="price-input-group">
+                    <label for="ntfpGrowthRate">Annual Growth Rate (%)</label>
+                    <input type="number" id="ntfpGrowthRate" step="0.1" min="-10" max="50" value="0" onchange="updatePrices()">
+                </div>
+            </div>
+
+            <!-- Carbon Prices -->
+            <div class="price-section">
+                <div class="price-section-title">Carbon Credits:</div>
+                <div class="price-input-group">
+                    <label for="carbonPrice">Initial Price ($/tCO2)</label>
+                    <input type="number" id="carbonPrice" step="0.01" min="0" value="6" onchange="updatePrices()">
+                    <small id="carbonCurrentPrice" style="color: #6b7280; font-size: 11px;">Current: $6.00</small>
+                </div>
+                <div class="price-input-group">
+                    <label for="carbonGrowthRate">Annual Growth Rate (%)</label>
+                    <input type="number" id="carbonGrowthRate" step="0.1" min="-10" max="50" value="0" onchange="updatePrices()">
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="main-chart">
+                <div class="chart-title">Financial Analysis Over Time</div>
+                <div class="chart-container">
+                    <canvas id="cashFlowChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="indicators-panel">
+                <div id="modelInfoCard" class="model-info" style="display: none;">
+                    <h3 id="modelTitle">Selected Model</h3>
+                    <p><strong>Country:</strong> <span id="modelCountry">-</span></p>
+                    <p><strong>Species:</strong> <span id="modelSpecies">-</span></p>
+                    <p><strong>Density:</strong> <span id="currentDensity">30%</span></p>
+                </div>
+                
+                <div class="indicator-card npv">
+                    <div class="indicator-value" id="npvValue">$0</div>
+                    <div class="indicator-label">Net Present Value</div>
+                </div>
+                
+                <div class="indicator-card irr">
+                    <div class="indicator-value" id="irrValue">0%</div>
+                    <div class="indicator-label">Internal Rate of Return</div>
+                </div>
+                
+                <div class="indicator-card bcr">
+                    <div class="indicator-value" id="bcrValue">0.00</div>
+                    <div class="indicator-label">Benefit-Cost Ratio</div>
+                </div>
+                
+                <div class="indicator-card breakeven" title="NTFP Break-Even Analysis: Shows the USD price per kg that makes NPV = 0. ↑ means minimum price needed for profitability (when current NPV < 0). ↓ means maximum price that maintains profitability (when current NPV > 0). Formula considers 2% annual price growth and current density settings.">
+                    <div class="indicator-value" id="breakevenValue">$0.00</div>
+                    <div class="indicator-label">NTFP Break-Even Price</div>
+                </div>
+                
+                <div class="indicator-card breakeven" title="Carbon Break-Even Analysis: Shows the USD price per tCO2 that makes NPV = 0. Uses iterative bisection method to find the exact price. When NPV is already positive without carbon, no break-even exists.">
+                    <div class="indicator-value" id="carbonBreakevenValue">$0.00</div>
+                    <div class="indicator-label">Carbon Break-Even Price</div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div id="loading" class="loading">
+            Loading model data...
+        </div>
+
+        <div id="error" class="error" style="display: none;">
+            Error loading data. Please check if the dashboard_data.json file is available.
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Developed by:</p>
+        <a href="https://www.conservation-strategy.org" target="_blank" class="logo-link">
+            <img src="CSF logo black.png" alt="Conservation Strategy Fund" />
+        </a>
+    </footer>
+
+    <script>
+        // Global variables
+        let dashboardData = null;
+        let selectedModel = null;
+        let chart = null;
+        let currentDensity = 30;
+        let ntfpPrice = 0;
+        let ntfpGrowthRate = 0;
+        let carbonPrice = 6;
+        let carbonGrowthRate = 0;
+        
+        // Categories that should NOT be affected by density changes
+        const densityExemptCategories = [
+            "Ant control",
+            "Fence",
+            "Fence installation", 
+            "Fire protection",
+            "Hoeing",
+            "Limestone",
+            "Limestone application",
+            "Technical Assistance",
+            "Tax"
+        ];
+        
+        // Base density values for each model (trees/ha at 30% scenario)
+        const baseDensityValues = {
+            44: 80,    // Ghana - Vitellaria paradoxa (Shea)
+            27: 1500,  // Ethiopia - Aframomum corrorima (Ethiopian cardamom/corrorima)
+            29: 3150,  // Ethiopia - Arundinaria alpina (highland bamboo)
+            11: 120,   // Brazil - Euterpe oleracea (Açaí)
+            31: 46,    // Nigeria - Garcinia kola (Bitter kola, Orogbo)
+            38: 200,   // Nigeria - Gnetum africanum (Eruru, Afang, Okana)
+            49: 400,   // Brazil - Ilex paraguariensis (Yerba mate)
+            30: 60,    // Nigeria - Irvingia gabonensis (Bush mango, Ogbono)
+            45: 50,    // Ghana - Parkia biglobosa (Local: Dawadawa)
+            47: 150,   // Brazil - Paullinia cupana (Guarana)
+            28: 2500,  // Ethiopia - Piper capense (Timiz long pepper)
+            43: 100,   // Ghana - Tetrapleura tetraptera (Prekese)
+            50: 200,   // Brazil - Aniba roseaodora
+            51: 550    // Ecuador - Ilex guayusa (guayusa)
+        };
+        
+        // Exchange rates (PPP - World Bank) for currency conversion
+        const exchangeRates = {
+            "BRL": 2.48, // Brazilian Real to USD (PPP)
+            "NGN": 223.5  // Nigerian Naira to USD (PPP)
+        };
+        
+        // Function to calculate density-adjusted costs for a cash flow item
+        function calculateDensityAdjustedCosts(item) {
+            if (!item.cost_details || !selectedModel) {
+                // If no cost_details, apply density to all costs (original behavior)
+                const baseDensity = baseDensityValues[selectedModel.id] || 30;
+                const currentAbsoluteDensity = baseDensity * (currentDensity / 30);
+                return item.costs * (currentAbsoluteDensity / baseDensity);
+            }
+            
+            const baseDensity = baseDensityValues[selectedModel.id] || 30;
+            const currentAbsoluteDensity = baseDensity * (currentDensity / 30);
+            const densityFactor = currentAbsoluteDensity / baseDensity;
+            
+            let densityAdjustedCosts = 0;
+            item.cost_details.forEach(cost => {
+                if (densityExemptCategories.includes(cost.category)) {
+                    // This category should not be affected by density
+                    densityAdjustedCosts += cost.amount;
+                } else {
+                    // Apply density adjustment: Original * (CurrentDensity/BaseDensity)
+                    densityAdjustedCosts += cost.amount * densityFactor;
+                }
+            });
+            
+            return densityAdjustedCosts;
+        }
+        
+        // Function to calculate density-adjusted benefits for a cash flow item with dynamic pricing
+        function calculateDensityAdjustedBenefits(item, year = null) {
+            if (!item.benefit_details || !selectedModel) {
+                // If no benefit_details, apply density to all benefits except carbon
+                const baseDensity = baseDensityValues[selectedModel.id] || 30;
+                const currentAbsoluteDensity = baseDensity * (currentDensity / 30);
+                return item.benefits * (currentAbsoluteDensity / baseDensity);
+            }
+            
+            const baseDensity = baseDensityValues[selectedModel.id] || 30;
+            const currentAbsoluteDensity = baseDensity * (currentDensity / 30);
+            const densityFactor = currentAbsoluteDensity / baseDensity;
+            
+            let densityAdjustedBenefits = 0;
+            item.benefit_details.forEach(benefit => {
+                if (benefit.product === "Carbon") {
+                    // Skip carbon here - it's calculated separately in calculateDynamicCarbonValue
+                    // This prevents double-counting carbon benefits
+                    return;
+                } else {
+                    // Calculate dynamic price with growth
+                    const yearIndex = year !== null ? year : (item.year - 1);
+                    const growthFactor = Math.pow(1 + (ntfpGrowthRate / 100), yearIndex);
+                    
+                    // Use dynamic NTFP price from controls if set, otherwise use original price
+                    let dynamicPrice = ntfpPrice > 0 ? ntfpPrice : benefit.price;
+                    
+                    // Convert dynamic price to local currency if needed
+                    if (selectedModel.currency === 'Real') {
+                        dynamicPrice = dynamicPrice * exchangeRates['BRL'];
+                    } else if (selectedModel.currency === 'Naira') {
+                        dynamicPrice = dynamicPrice * exchangeRates['NGN'];
+                    }
+                    
+                    // Apply growth and calculate dynamic value
+                    const dynamicPriceWithGrowth = dynamicPrice * growthFactor;
+                    const dynamicValue = benefit.quantity * dynamicPriceWithGrowth * densityFactor;
+                    
+                    densityAdjustedBenefits += dynamicValue;
+                }
+            });
+            
+            return densityAdjustedBenefits;
+        }
+
+        // Function to calculate carbon benefits with dynamic pricing (for separate carbon calculations)
+        function calculateDynamicCarbonValue(item, year = null) {
+            if (!item.carbon_details) return 0;
+            
+            // Calculate dynamic carbon price with growth
+            const yearIndex = year !== null ? year : (item.year - 1);
+            const growthFactor = Math.pow(1 + (carbonGrowthRate / 100), yearIndex);
+            
+            // Use dynamic carbon price from controls if set, otherwise use original price
+            const dynamicPrice = carbonPrice > 0 ? carbonPrice : item.carbon_details.price;
+            const dynamicPriceWithGrowth = dynamicPrice * growthFactor;
+            
+            // Calculate dynamic value (carbon is always in USD)
+            const dynamicValue = item.carbon_details.quantity * dynamicPriceWithGrowth;
+            
+            return dynamicValue;
+        }
+        
+        // Function to calculate IRR dynamically using Newton-Raphson method
+        function calculateDynamicIRR(cashFlows, includeCarbon) {
+            // Calculate net cash flows for each year with current density and carbon settings
+            const netCashFlows = cashFlows.map(item => {
+                const carbonValue = includeCarbon ? calculateDynamicCarbonValue(item, item.year - 1) : 0;
+                const densityAdjustedBenefits = calculateDensityAdjustedBenefits(item, item.year - 1);
+                const densityAdjustedCosts = calculateDensityAdjustedCosts(item);
+                let totalNet = (densityAdjustedBenefits + carbonValue) - densityAdjustedCosts;
+                
+                // Convert to USD if necessary for IRR calculation consistency
+                if (selectedModel.currency === 'Real') {
+                    totalNet = totalNet / exchangeRates['BRL'];
+                } else if (selectedModel.currency === 'Naira') {
+                    totalNet = totalNet / exchangeRates['NGN'];
+                }
+                
+                return totalNet;
+            });
+            
+            // Check if we have negative initial cash flow (typical investment pattern)
+            const hasNegativeStart = netCashFlows[0] < 0;
+            const hasPositiveFlows = netCashFlows.some(cf => cf > 0);
+            
+            // If all cash flows are negative or all positive, no meaningful IRR exists
+            if (!hasNegativeStart || !hasPositiveFlows) {
+                return null;
+            }
+            
+            // Calculate total net cash flow to check if project is profitable
+            const totalNet = netCashFlows.reduce((sum, cf) => sum + cf, 0);
+            if (totalNet <= 0) {
+                return null; // Project is not profitable, no positive IRR
+            }
+            
+            // Newton-Raphson method to find IRR
+            let irr = 0.1; // Start with 10% guess
+            const maxIterations = 50;
+            const tolerance = 1e-6;
+            
+            for (let i = 0; i < maxIterations; i++) {
+                let npv = 0;
+                let dnpv = 0; // Derivative of NPV
+                
+                netCashFlows.forEach((cashFlow, year) => {
+                    if (year === 0) {
+                        npv += cashFlow; // No discounting for year 0
+                        dnpv += 0; // Derivative is 0 for year 0
+                    } else {
+                        const discountFactor = Math.pow(1 + irr, year);
+                        npv += cashFlow / discountFactor;
+                        dnpv -= cashFlow * year / Math.pow(1 + irr, year + 1);
+                    }
+                });
+                
+                // Check for convergence
+                if (Math.abs(npv) < tolerance) {
+                    return Math.max(0, irr * 100); // Convert to percentage, ensure non-negative
+                }
+                
+                // Check for degenerate case
+                if (Math.abs(dnpv) < tolerance) {
+                    break;
+                }
+                
+                // Newton-Raphson update
+                const newIrr = irr - npv / dnpv;
+                
+                // Constrain IRR to reasonable bounds
+                if (newIrr < -0.95 || newIrr > 5) {
+                    break;
+                }
+                
+                irr = newIrr;
+            }
+            
+            // Return result if reasonable, otherwise null
+            if (irr >= 0 && irr <= 500) { // Up to 500% IRR
+                return irr * 100;
+            }
+            
+            return null;
+        }
+
+        // Function to calculate NTFP break-even price
+        function calculateNTFPBreakEvenPrice() {
+            if (!selectedModel || !selectedModel.cash_flow) return null;
+            
+            const rate = discountRate / 100;
+            const growthRate = ntfpGrowthRate / 100; // Use dynamic NTFP growth rate from controls
+            
+            let K = 0; // Sum of discounted NTFP benefit multipliers (qt * growth * discount)
+            let C = 0; // Sum of discounted non-NTFP net flows (carbon - costs)
+            let hasNTFP = false; // Track if model actually has NTFP products
+            
+            selectedModel.cash_flow.forEach((item, index) => {
+                // Discount factor: 1 for t=0, 1/(1+r)^t for t>=1
+                const discountFactor = index === 0 ? 1 : Math.pow(1 + rate, index);
+                
+                // Growth factor for NTFP price: (1+g)^t
+                const growthFactor = Math.pow(1 + growthRate, index);
+                
+                // Calculate qt: effective NTFP quantity (everything except price)
+                let qt = 0;
+                if (item.benefit_details) {
+                    item.benefit_details.forEach(benefit => {
+                        if (benefit.product !== "Carbon") {
+                            hasNTFP = true;
+                            // Get the quantity components without price
+                            const baseDensity = baseDensityValues[selectedModel.id] || 30;
+                            const currentAbsoluteDensity = baseDensity * (currentDensity / 30);
+                            const densityFactor = currentAbsoluteDensity / baseDensity;
+                            
+                            // Use the quantity directly from the benefit data with density adjustment
+                            qt += benefit.quantity * densityFactor;
+                        }
+                    });
+                }
+                
+                // K term: qt * growth * discount
+                K += (qt * growthFactor) / discountFactor;
+                
+                // C term: (carbon - costs) with discount
+                const carbonValue = includeCarbon ? calculateDynamicCarbonValue(item, index) : 0;
+                const densityAdjustedCosts = calculateDensityAdjustedCosts(item);
+                let netFixed = carbonValue - densityAdjustedCosts;
+                
+                // Convert to USD if necessary
+                if (selectedModel.currency === 'Real') {
+                    netFixed = netFixed / exchangeRates['BRL'];
+                } else if (selectedModel.currency === 'Naira') {
+                    netFixed = netFixed / exchangeRates['NGN'];
+                }
+                
+                C += netFixed / discountFactor;
+            });
+            
+            // If no NTFP found, return null
+            if (!hasNTFP || Math.abs(K) < 1e-6) {
+                return null;
+            }
+            
+            // Break-even price: P* = -C/K
+            const breakEvenPrice = -C / K;
+            
+            // Return result object with price and additional info
+            return {
+                price: breakEvenPrice,
+                K: K,
+                C: C,
+                hasNTFP: hasNTFP
+            };
+        }
+
+        // Function to calculate Carbon break-even price using iterative bisection method
+        function calculateCarbonBreakEvenPrice() {
+            if (!selectedModel || !selectedModel.cash_flow) return null;
+            
+            // First, check if model has carbon
+            let hasCarbon = false;
+            selectedModel.cash_flow.forEach(item => {
+                if (item.carbon_details && item.carbon_details.quantity) {
+                    hasCarbon = true;
+                }
+            });
+            
+            if (!hasCarbon) {
+                return { hasCarbon: false, message: "No carbon in this model" };
+            }
+            
+            // Calculate NPV without carbon to check if project is already profitable
+            const originalCarbonPrice = carbonPrice;
+            const originalIncludeCarbon = includeCarbon;
+            
+            // Temporarily disable carbon to get NPV without carbon
+            includeCarbon = false;
+            const npvWithoutCarbon = calculateNPVForPrice(0);
+            
+            // Restore original settings
+            includeCarbon = originalIncludeCarbon;
+            
+            // If NPV is already positive without carbon, no break-even exists
+            if (npvWithoutCarbon > 0) {
+                return { 
+                    hasCarbon: true, 
+                    profitable: true, 
+                    npvWithoutCarbon: npvWithoutCarbon,
+                    message: "Already profitable without carbon" 
+                };
+            }
+            
+            // Use bisection method to find break-even carbon price
+            let minPrice = 0;
+            let maxPrice = 1000; // Start with reasonable upper bound
+            const tolerance = 0.01; // $0.01 tolerance
+            const maxIterations = 50;
+            let iterations = 0;
+            
+            // First, find a reasonable upper bound where NPV becomes positive
+            // Increase the search limit to handle models with low carbon/high costs ratios
+            while (calculateNPVForCarbonPrice(maxPrice) <= 0 && maxPrice < 50000) {
+                maxPrice *= 2;
+            }
+            
+            // If even at very high price NPV is still negative, return no solution
+            if (calculateNPVForCarbonPrice(maxPrice) <= 0) {
+                return { 
+                    hasCarbon: true, 
+                    profitable: false, 
+                    message: "No break-even possible" 
+                };
+            }
+            
+            // Bisection method
+            while (iterations < maxIterations && (maxPrice - minPrice) > tolerance) {
+                const midPrice = (minPrice + maxPrice) / 2;
+                const npvAtMid = calculateNPVForCarbonPrice(midPrice);
+                
+                if (Math.abs(npvAtMid) < 0.1) { // Found break-even within $0.10
+                    return {
+                        hasCarbon: true,
+                        profitable: false,
+                        price: midPrice,
+                        npv: npvAtMid,
+                        iterations: iterations
+                    };
+                }
+                
+                if (npvAtMid < 0) {
+                    minPrice = midPrice; // Need higher carbon price
+                } else {
+                    maxPrice = midPrice; // Can use lower carbon price
+                }
+                
+                iterations++;
+            }
+            
+            // Return the final approximation
+            const finalPrice = (minPrice + maxPrice) / 2;
+            return {
+                hasCarbon: true,
+                profitable: false,
+                price: finalPrice,
+                npv: calculateNPVForCarbonPrice(finalPrice),
+                iterations: iterations
+            };
+        }
+        
+        // Helper function to calculate NPV for a specific carbon price
+        function calculateNPVForCarbonPrice(testCarbonPrice) {
+            const rate = discountRate / 100;
+            let npv = 0;
+            
+            selectedModel.cash_flow.forEach((item, index) => {
+                // Calculate carbon value with test price
+                const carbonValue = calculateDynamicCarbonValueWithPrice(item, item.year - 1, testCarbonPrice);
+                const densityAdjustedBenefits = calculateDensityAdjustedBenefits(item, item.year - 1);
+                const densityAdjustedCosts = calculateDensityAdjustedCosts(item);
+                const totalNet = (densityAdjustedBenefits + carbonValue) - densityAdjustedCosts;
+                
+                if (index === 0) {
+                    npv += totalNet; // No discounting for first year
+                } else {
+                    npv += totalNet / Math.pow(1 + rate, index);
+                }
+            });
+            
+            // Convert to USD if needed
+            if (selectedModel.currency === 'Real') {
+                npv = npv / exchangeRates['BRL'];
+            } else if (selectedModel.currency === 'Naira') {
+                npv = npv / exchangeRates['NGN'];
+            }
+            
+            return npv;
+        }
+        
+        // Helper function to calculate NPV for any price (used for no-carbon calculation)
+        function calculateNPVForPrice(testPrice) {
+            const rate = discountRate / 100;
+            let npv = 0;
+            
+            selectedModel.cash_flow.forEach((item, index) => {
+                const densityAdjustedBenefits = calculateDensityAdjustedBenefits(item, item.year - 1);
+                const densityAdjustedCosts = calculateDensityAdjustedCosts(item);
+                const totalNet = densityAdjustedBenefits - densityAdjustedCosts;
+                
+                if (index === 0) {
+                    npv += totalNet; // No discounting for first year
+                } else {
+                    npv += totalNet / Math.pow(1 + rate, index);
+                }
+            });
+            
+            // Convert to USD if needed
+            if (selectedModel.currency === 'Real') {
+                npv = npv / exchangeRates['BRL'];
+            } else if (selectedModel.currency === 'Naira') {
+                npv = npv / exchangeRates['NGN'];
+            }
+            
+            return npv;
+        }
+        
+        // Helper function to calculate carbon value with a specific price (similar to calculateDynamicCarbonValue)
+        function calculateDynamicCarbonValueWithPrice(item, year = null, testPrice) {
+            if (!item.carbon_details) return 0;
+            
+            // Calculate dynamic carbon price with growth
+            const growthRate = carbonGrowthRate / 100;
+            const yearIndex = year !== null ? year : (item.year - 1);
+            const dynamicPriceWithGrowth = testPrice * Math.pow(1 + growthRate, yearIndex);
+            
+            const dynamicValue = item.carbon_details.quantity * dynamicPriceWithGrowth;
+            
+            return dynamicValue;
+        }
+
+        // Helper function to get original USD price for a product
+        function getOriginalUSDPrice(benefit) {
+            if (!benefit || !benefit.price) {
+                return 0;
+            }
+            
+            let priceInUSD = benefit.price;
+            
+            // Convert to USD if necessary
+            if (selectedModel.currency === 'Real') {
+                priceInUSD = priceInUSD / exchangeRates['BRL'];
+            } else if (selectedModel.currency === 'Naira') {
+                priceInUSD = priceInUSD / exchangeRates['NGN'];
+            }
+            
+            return priceInUSD;
+        }
+        
+        let discountRate = 10;
+        let includeCarbon = true;
+
+        // Chart colors using our theme
+        const chartColors = {
+            cost: '#e76f51',      // Secondary orange
+            benefit: '#2a9d8f',   // Primary teal
+            carbon: '#6a994e',    // Green for carbon
+            cashFlow: '#264653',  // Primary dark
+            cumulative: '#e9c46a' // Accent yellow
+        };
+
+        // Load the correct IRR values from the economic indicators
+        const correctIRRValues = {
+            11: null,   // no IRR
+            27: null,   // no IRR
+            28: null,   // no IRR (1.0 means instant payback)
+            29: 454.5,
+            30: 13.6,
+            31: 59.7,
+            38: null,   // no IRR
+            43: 36.3,
+            44: 15.1,
+            45: 31.0,
+            47: 39.8,
+            49: 63.8,
+            50: 21.3,
+            51: 92.5
+        };
+
+        // Load data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboardData();
+        });
+
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('dashboard_data.json');
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                dashboardData = await response.json();
+                console.log('Dashboard data loaded:', dashboardData);
+                
+                populateModelSelect();
+                hideLoading();
+                
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+                showError('Error loading data: ' + error.message);
+                hideLoading();
+            }
+        }
+
+        function populateModelSelect() {
+            const select = document.getElementById('modelSelect');
+            select.innerHTML = '<option value="">Select a model...</option>';
+            
+            dashboardData.models.forEach((model, index) => {
+                const option = document.createElement('option');
+                option.value = index;
+                // Format: "Model ID - target_species (Country)" - using 'target_species' field from JSON
+                option.textContent = `${model.id} - ${model.target_species} (${model.country})`;
+                select.appendChild(option);
+            });
+        }
+
+        function updateModel() {
+            const selectElement = document.getElementById('modelSelect');
+            const selectedIndex = selectElement.value;
+            
+            if (selectedIndex === '') {
+                hideModelInfo();
+                clearChart();
+                clearIndicators();
+                return;
+            }
+            
+            selectedModel = dashboardData.models[selectedIndex];
+            console.log('Selected model:', selectedModel);
+            
+            showModelInfo();
+            updateAnalysis();
+        }
+
+        function showModelInfo() {
+            const infoCard = document.getElementById('modelInfoCard');
+            const title = document.getElementById('modelTitle');
+            const country = document.getElementById('modelCountry');
+            const species = document.getElementById('modelSpecies');
+            const density = document.getElementById('currentDensity');
+            
+            title.textContent = selectedModel.target_species;
+            country.textContent = selectedModel.country;
+            species.textContent = selectedModel.target_species;
+            
+            // Calculate current absolute density
+            const baseDensity = baseDensityValues[selectedModel.id] || 30;
+            const currentAbsoluteDensity = Math.round(baseDensity * (currentDensity / 30));
+            density.textContent = currentAbsoluteDensity + ' trees/ha';
+            
+            // Add exchange rate information for Brazil and Nigeria
+            let exchangeRateInfo = '';
+            if (selectedModel.country === 'Brazil' && selectedModel.currency !== 'USD') {
+                const rate = exchangeRates['BRL'];
+                exchangeRateInfo = `<br><small style="color: #ffffff; font-size: 12px;">Exchange Rate: 1 USD = ${rate} BRL (PPP - World Bank)</small>`;
+            } else if (selectedModel.country === 'Nigeria' && selectedModel.currency !== 'USD') {
+                const rate = exchangeRates['NGN'];
+                exchangeRateInfo = `<br><small style="color: #ffffff; font-size: 12px;">Exchange Rate: 1 USD = ${rate} NGN (PPP - World Bank)</small>`;
+            }
+            
+            // Update species display with exchange rate if applicable
+            if (exchangeRateInfo) {
+                species.innerHTML = selectedModel.target_species + exchangeRateInfo;
+            } else {
+                species.textContent = selectedModel.target_species;
+            }
+            
+            infoCard.style.display = 'block';
+            
+            // Initialize price controls
+            initializePriceControls();
+        }
+
+        function hideModelInfo() {
+            document.getElementById('modelInfoCard').style.display = 'none';
+        }
+
+        function toggleCarbonSwitch() {
+            const checkbox = document.getElementById('includeCarbon');
+            const toggleSwitch = document.getElementById('carbonToggle');
+            
+            // Toggle the checkbox state
+            checkbox.checked = !checkbox.checked;
+            
+            // Update the visual state
+            if (checkbox.checked) {
+                toggleSwitch.classList.add('active');
+            } else {
+                toggleSwitch.classList.remove('active');
+            }
+            
+            // Trigger the analysis update
+            updateAnalysis();
+        }
+
+        function updateDensity() {
+            const input = document.getElementById('densityInput');
+            currentDensity = parseFloat(input.value);
+            
+            if (selectedModel) {
+                // Update absolute density display
+                const baseDensity = baseDensityValues[selectedModel.id] || 30;
+                const currentAbsoluteDensity = Math.round(baseDensity * (currentDensity / 30));
+                document.getElementById('currentDensity').textContent = currentAbsoluteDensity + ' trees/ha';
+                updateAnalysis();
+            }
+        }
+
+        function updatePrices() {
+            // Get values from inputs - ALWAYS use these values for calculations
+            ntfpPrice = parseFloat(document.getElementById('ntfpPrice').value) || 0;
+            ntfpGrowthRate = parseFloat(document.getElementById('ntfpGrowthRate').value) || 0;
+            carbonPrice = parseFloat(document.getElementById('carbonPrice').value) || 6;
+            carbonGrowthRate = parseFloat(document.getElementById('carbonGrowthRate').value) || 0;
+            
+            if (selectedModel) {
+                updateAnalysis();
+            }
+        }
+
+        function initializePriceControls() {
+            if (!selectedModel) return;
+            
+            // Find the first NTFP price in the model to use as suggested price
+            let suggestedNTFPPrice = 0;
+            let currentCarbonPrice = 6;
+            
+            if (selectedModel.cash_flow && selectedModel.cash_flow.length > 0) {
+                // Search through all years to find the first one with NTFP products
+                for (let yearData of selectedModel.cash_flow) {
+                    if (yearData.benefit_details && yearData.benefit_details.length > 0) {
+                        const ntfpBenefit = yearData.benefit_details.find(b => b.product !== "Carbon");
+                        if (ntfpBenefit) {
+                            suggestedNTFPPrice = ntfpBenefit.price || 0;
+                            break; // Found NTFP price, stop searching
+                        }
+                    }
+                }
+                
+                // Get carbon price from first year carbon_details
+                const firstYear = selectedModel.cash_flow[0];
+                if (firstYear.carbon_details) {
+                    currentCarbonPrice = firstYear.carbon_details.price || 6;
+                }
+            }
+            
+            // Convert NTFP prices to USD if necessary (carbon is always in USD)
+            if (selectedModel.currency === 'Real') {
+                const rate = exchangeRates['BRL'];
+                suggestedNTFPPrice = suggestedNTFPPrice / rate;
+                // currentCarbonPrice stays the same - already in USD
+            } else if (selectedModel.currency === 'Naira') {
+                const rate = exchangeRates['NGN'];
+                suggestedNTFPPrice = suggestedNTFPPrice / rate;
+                // currentCarbonPrice stays the same - already in USD
+            }
+            
+            // Show price controls first
+            document.getElementById('priceControls').style.display = 'block';
+            
+            // Use setTimeout to ensure elements are rendered
+            setTimeout(() => {
+                // Set initial values to match the current model prices (always reset to model's actual prices)
+                const ntfpPriceInput = document.getElementById('ntfpPrice');
+                const ntfpGrowthInput = document.getElementById('ntfpGrowthRate');
+                const carbonPriceInput = document.getElementById('carbonPrice');
+                const carbonGrowthInput = document.getElementById('carbonGrowthRate');
+                
+                // Set NTFP price to match the current model price (always reset when switching models)
+                if (ntfpPriceInput) {
+                    ntfpPriceInput.value = parseFloat(suggestedNTFPPrice.toFixed(2));
+                }
+                if (ntfpGrowthInput) {
+                    ntfpGrowthInput.value = 0; // Default growth rate
+                }
+                if (carbonPriceInput) {
+                    carbonPriceInput.value = parseFloat(currentCarbonPrice.toFixed(2));
+                }
+                if (carbonGrowthInput) {
+                    carbonGrowthInput.value = 0; // Default growth rate
+                }
+                
+                // Update current price displays
+                const ntfpCurrentPriceEl = document.getElementById('ntfpCurrentPrice');
+                const carbonCurrentPriceEl = document.getElementById('carbonCurrentPrice');
+                
+                // Prepare display text with proper formatting
+                let ntfpDisplayText = `Current: $${suggestedNTFPPrice.toFixed(2)}`;
+                let carbonDisplayText = `Current: $${currentCarbonPrice.toFixed(2)}`;
+                
+                // Add original currency info ONLY for NTFP products if converted
+                if (selectedModel.currency === 'Real') {
+                    const originalNTFPPrice = suggestedNTFPPrice * exchangeRates['BRL'];
+                    ntfpDisplayText += ` (${originalNTFPPrice.toFixed(2)} BRL)`;
+                    // Carbon is already in USD, no conversion needed
+                } else if (selectedModel.currency === 'Naira') {
+                    const originalNTFPPrice = suggestedNTFPPrice * exchangeRates['NGN'];
+                    ntfpDisplayText += ` (${originalNTFPPrice.toFixed(0)} NGN)`;
+                    // Carbon is already in USD, no conversion needed
+                }
+                
+                if (ntfpCurrentPriceEl) {
+                    ntfpCurrentPriceEl.textContent = ntfpDisplayText;
+                    ntfpCurrentPriceEl.style.color = '#059669'; // Green color for visibility
+                    ntfpCurrentPriceEl.style.fontWeight = '600';
+                }
+                
+                if (carbonCurrentPriceEl) {
+                    carbonCurrentPriceEl.textContent = carbonDisplayText;
+                    carbonCurrentPriceEl.style.color = '#059669'; // Green color for visibility
+                    carbonCurrentPriceEl.style.fontWeight = '600';
+                }
+                
+                // Update global variables from the current input values (don't overwrite user input)
+                updatePrices();
+                
+            }, 100); // 100ms delay to ensure DOM is ready
+        }
+
+        function updateAnalysis() {
+            if (!selectedModel) return;
+            
+            const rate = parseFloat(document.getElementById('discountRate').value) / 100;
+            discountRate = rate * 100;
+            
+            includeCarbon = document.getElementById('includeCarbon').checked;
+            
+            updateChart();
+            updateIndicators();
+        }
+
+        function updateChart() {
+            if (!selectedModel || !selectedModel.cash_flow) return;
+            
+            const ctx = document.getElementById('cashFlowChart').getContext('2d');
+            
+            if (chart) {
+                chart.destroy();
+            }
+            
+            const datasets = [];
+            const years = selectedModel.cash_flow.map(item => item.year);
+            
+            // Always show all three series
+            const rate = discountRate / 100;
+            
+            // Cost data (positive values now) with discount applied and density-adjusted
+            const costData = selectedModel.cash_flow.map(item => {
+                const discountFactor = Math.pow(1 + rate, item.year);
+                const densityAdjustedCosts = calculateDensityAdjustedCosts(item);
+                return densityAdjustedCosts / discountFactor; // Apply discount
+            });
+            
+            datasets.push({
+                label: 'Costs',
+                data: costData,
+                borderColor: chartColors.cost,
+                backgroundColor: chartColors.cost + '20',
+                tension: 0.4,
+                fill: false
+            });
+            
+            // Benefit data with discount applied, density-adjusted and dynamic pricing
+            const benefitData = selectedModel.cash_flow.map(item => {
+                const discountFactor = Math.pow(1 + rate, item.year);
+                const densityAdjustedBenefits = calculateDensityAdjustedBenefits(item, item.year - 1);
+                return densityAdjustedBenefits / discountFactor; // Apply discount
+            });
+            
+            datasets.push({
+                label: 'Benefits',
+                data: benefitData,
+                borderColor: chartColors.benefit,
+                backgroundColor: chartColors.benefit + '20',
+                tension: 0.4,
+                fill: false
+            });
+            
+            // Carbon data (only if enabled) with discount applied and dynamic pricing
+            if (includeCarbon) {
+                const carbonData = selectedModel.cash_flow.map(item => {
+                    const discountFactor = Math.pow(1 + rate, item.year);
+                    const dynamicCarbonValue = calculateDynamicCarbonValue(item, item.year - 1);
+                    return dynamicCarbonValue / discountFactor; // Apply discount
+                });
+                
+                datasets.push({
+                    label: 'Carbon',
+                    data: carbonData,
+                    borderColor: chartColors.carbon,
+                    backgroundColor: chartColors.carbon + '20',
+                    tension: 0.4,
+                    fill: false
+                });
+            }
+            
+            // Cash flow data (net) with discount applied, proper density adjustments, and dynamic pricing
+            const cashFlowData = selectedModel.cash_flow.map(item => {
+                const discountFactor = Math.pow(1 + rate, item.year);
+                const dynamicCarbonValue = includeCarbon ? calculateDynamicCarbonValue(item, item.year - 1) : 0;
+                const densityAdjustedBenefits = calculateDensityAdjustedBenefits(item, item.year - 1);
+                const densityAdjustedCosts = calculateDensityAdjustedCosts(item);
+                const totalNet = (densityAdjustedBenefits + dynamicCarbonValue) - densityAdjustedCosts;
+                return totalNet / discountFactor; // Apply discount
+            });
+            
+            datasets.push({
+                label: 'Net Cash Flow',
+                data: cashFlowData,
+                borderColor: chartColors.cashFlow,
+                backgroundColor: chartColors.cashFlow + '20',
+                tension: 0.4,
+                fill: false
+            });
+            
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: years,
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        title: {
+                            display: false
+                        },
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20,
+                                font: {
+                                    family: 'Inter',
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(38, 70, 83, 0.96)',
+                            titleColor: '#e9c46a',
+                            bodyColor: '#ffffff',
+                            borderColor: '#2a9d8f',
+                            borderWidth: 2,
+                            cornerRadius: 12,
+                            displayColors: false,
+                            padding: 15,
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold',
+                                family: 'Inter'
+                            },
+                            bodyFont: {
+                                size: 12,
+                                family: 'Inter'
+                            },
+                            footerFont: {
+                                size: 10,
+                                family: 'Inter'
+                            },
+                            bodySpacing: 2,
+                            titleSpacing: 6,
+                            footerSpacing: 8,
+                            caretSize: 8,
+                            multiKeyBackground: 'transparent',
+                            maxWidth: 700,
+                            maxHeight: 650,
+                            yAlign: 'center',
+                            position: 'average',
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    return `Year ${tooltipItems[0].label}`;
+                                },
+                                label: function(context) {
+                                    return ''; // Remove default labels, we'll use afterBody
+                                },
+                                afterBody: function(tooltipItems) {
+                                    const yearIndex = tooltipItems[0].dataIndex;
+                                    const yearData = selectedModel.cash_flow[yearIndex];
+                                    const rate = discountRate / 100;
+                                    const discountFactor = Math.pow(1 + rate, yearData.year);
+                                    
+                                    let lines = [];
+                                    
+                                    // Cost breakdown using density-adjusted function
+                                    if (yearData.cost_details && yearData.cost_details.length > 0) {
+                                        lines.push('');
+                                        lines.push('COST BREAKDOWN:');
+                                        let totalCosts = 0;
+                                        
+                                        const baseDensity = baseDensityValues[selectedModel.id] || 30;
+                                        const currentAbsoluteDensity = baseDensity * (currentDensity / 30);
+                                        const densityFactor = currentAbsoluteDensity / baseDensity;
+                                        
+                                        yearData.cost_details.forEach(cost => {
+                                            let adjustedAmount;
+                                            if (densityExemptCategories.includes(cost.category)) {
+                                                // This category should not be affected by density
+                                                adjustedAmount = cost.amount / discountFactor;
+                                            } else {
+                                                // Apply density adjustment: Original * (CurrentDensity/BaseDensity)
+                                                adjustedAmount = (cost.amount * densityFactor) / discountFactor;
+                                            }
+                                            totalCosts += adjustedAmount;
+                                            lines.push(`   ${cost.category}: $${adjustedAmount.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}`);
+                                        });
+                                        lines.push(`   Total: $${totalCosts.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}`);
+                                    }
+                                    
+                                    // Benefit breakdown using density-adjusted function
+                                    if (yearData.benefit_details && yearData.benefit_details.length > 0) {
+                                        lines.push('');
+                                        lines.push('BENEFITS:');
+                                        let totalBenefits = 0;
+                                        
+                                        const baseDensity = baseDensityValues[selectedModel.id] || 30;
+                                        const currentAbsoluteDensity = baseDensity * (currentDensity / 30);
+                                        const densityFactor = currentAbsoluteDensity / baseDensity;
+                                        
+                                        yearData.benefit_details.forEach(benefit => {
+                                            if (benefit.product === "Carbon") {
+                                                // Skip carbon here - it will be shown in the CARBON section
+                                                return;
+                                            }
+                                            // Apply density adjustment: Original * (CurrentDensity/BaseDensity)
+                                            const adjustedQuantity = benefit.quantity * densityFactor;
+                                            // Use dynamic NTFP pricing from inputs
+                                            const yearIndex = yearData.year - 1;
+                                            const displayPrice = ntfpPrice * Math.pow(1 + ntfpGrowthRate / 100, yearIndex);
+                                            const adjustedValue = (adjustedQuantity * displayPrice) / discountFactor;
+                                            
+                                            totalBenefits += adjustedValue;
+                                            lines.push(`   Harvest: ${adjustedQuantity.toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1})} ${benefit.unit || 'units'}`);
+                                            lines.push(`   Unit Price: $${displayPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}/${benefit.unit || 'unit'}`);
+                                            lines.push(`   Revenue: $${adjustedValue.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}`);
+                                        });
+                                        lines.push(`   Total: $${totalBenefits.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}`);
+                                    }
+                                    
+                                    // Carbon breakdown (only if enabled and available) - Carbon is not affected by density
+                                    if (includeCarbon && yearData.carbon_details) {
+                                        lines.push('');
+                                        lines.push('CARBON:');
+                                        const carbonQuantity = yearData.carbon_details.quantity; // No density factor for carbon
+                                        // Use dynamic carbon pricing from inputs
+                                        const yearIndex = yearData.year - 1;
+                                        const dynamicCarbonPrice = carbonPrice * Math.pow(1 + carbonGrowthRate / 100, yearIndex);
+                                        const carbonValue = (carbonQuantity * dynamicCarbonPrice) / discountFactor;
+                                        lines.push(`   Sequestration: ${carbonQuantity.toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1})} ${yearData.carbon_details.unit}`);
+                                        lines.push(`   Price: $${dynamicCarbonPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}/${yearData.carbon_details.unit.replace('/ha/year', '')}`);
+                                        lines.push(`   Revenue: $${carbonValue.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}`);
+                                    }
+                                    
+                                    // Net cash flow using proper density adjustments
+                                    const carbonValue = (includeCarbon && yearData.carbon_details) ? yearData.carbon_details.value / discountFactor : 0; // No density for carbon
+                                    const densityAdjustedBenefits = calculateDensityAdjustedBenefits(yearData) / discountFactor;
+                                    const densityAdjustedCosts = calculateDensityAdjustedCosts(yearData) / discountFactor;
+                                    const netCashFlow = (densityAdjustedBenefits + carbonValue) - densityAdjustedCosts;
+                                    lines.push('');
+                                    lines.push(`NET CASH FLOW: $${netCashFlow.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0})}`);
+                                    
+                                    return lines;
+                                },
+                                footer: function(tooltipItems) {
+                                    return [];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Year',
+                                font: {
+                                    family: 'Inter',
+                                    size: 14,
+                                    weight: '600'
+                                },
+                                color: '#264653'
+                            },
+                            grid: {
+                                color: 'rgba(42, 157, 143, 0.1)'
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    family: 'Inter'
+                                }
+                            }
+                        },
+                        y: {
+                            display: true,
+                            title: {
+                                display: true,
+                                text: 'Value (USD)',
+                                font: {
+                                    family: 'Inter',
+                                    size: 14,
+                                    weight: '600'
+                                },
+                                color: '#264653'
+                            },
+                            grid: {
+                                color: 'rgba(42, 157, 143, 0.1)'
+                            },
+                            ticks: {
+                                color: '#6b7280',
+                                font: {
+                                    family: 'Inter'
+                                },
+                                callback: function(value) {
+                                    return '$' + value.toLocaleString('en-US');
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateIndicators() {
+            if (!selectedModel || !selectedModel.cash_flow) return;
+            
+            const rate = discountRate / 100;
+            
+            // Calculate NPV (including carbon if enabled) with proper density adjustments
+            let npv = 0;
+            selectedModel.cash_flow.forEach((item, index) => {
+                // Use index for discount calculation to match IRR logic (year 1 = index 0, no discount; year 2 = index 1, discount^1, etc.)
+                const carbonValue = includeCarbon ? calculateDynamicCarbonValue(item, item.year - 1) : 0;
+                const densityAdjustedBenefits = calculateDensityAdjustedBenefits(item, item.year - 1);
+                const densityAdjustedCosts = calculateDensityAdjustedCosts(item);
+                const totalNet = (densityAdjustedBenefits + carbonValue) - densityAdjustedCosts;
+                
+                if (index === 0) {
+                    npv += totalNet; // No discounting for first year (investment year)
+                } else {
+                    npv += totalNet / Math.pow(1 + rate, index);
+                }
+            });
+            
+            // Convert to USD if model is in different currency
+            if (selectedModel.currency === 'Real') {
+                npv = npv / exchangeRates['BRL'];
+            } else if (selectedModel.currency === 'Naira') {
+                npv = npv / exchangeRates['NGN'];
+            }
+            
+            // Calculate IRR dynamically based on current density and carbon settings
+            let irr = calculateDynamicIRR(selectedModel.cash_flow, includeCarbon);
+            if (irr === null || irr === undefined || isNaN(irr)) {
+                irr = 0; // No IRR available
+            }
+            
+            // Calculate BCR (including carbon if enabled) with proper density adjustments
+            let totalBenefits = 0;
+            let totalCosts = 0;
+            
+            selectedModel.cash_flow.forEach((item, index) => {
+                const carbonValue = includeCarbon ? calculateDynamicCarbonValue(item, item.year - 1) : 0;
+                const densityAdjustedBenefits = calculateDensityAdjustedBenefits(item, item.year - 1);
+                const densityAdjustedCosts = calculateDensityAdjustedCosts(item);
+                
+                if (index === 0) {
+                    // No discounting for first year
+                    totalBenefits += (densityAdjustedBenefits + carbonValue);
+                    totalCosts += densityAdjustedCosts;
+                } else {
+                    // Apply discount for subsequent years
+                    const discountFactor = Math.pow(1 + rate, index);
+                    totalBenefits += (densityAdjustedBenefits + carbonValue) / discountFactor;
+                    totalCosts += densityAdjustedCosts / discountFactor;
+                }
+            });
+            
+            // Convert to USD if model is in different currency (BCR is a ratio, so both numerator and denominator are converted equally)
+            if (selectedModel.currency === 'Real') {
+                totalBenefits = totalBenefits / exchangeRates['BRL'];
+                totalCosts = totalCosts / exchangeRates['BRL'];
+            } else if (selectedModel.currency === 'Naira') {
+                totalBenefits = totalBenefits / exchangeRates['NGN'];
+                totalCosts = totalCosts / exchangeRates['NGN'];
+            }
+            
+            const bcr = totalCosts > 0 ? totalBenefits / totalCosts : 0;
+            
+            // Update display (always in USD)
+            document.getElementById('npvValue').textContent = '$' + 
+                npv.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0});
+            
+            if (irr > 0) {
+                document.getElementById('irrValue').textContent = 
+                    irr.toLocaleString('en-US', {minimumFractionDigits: 1, maximumFractionDigits: 1}) + '%';
+            } else {
+                document.getElementById('irrValue').textContent = 'N/A';
+            }
+            
+            document.getElementById('bcrValue').textContent = 
+                bcr.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            
+            // Calculate NTFP Break-Even Price
+            const breakEvenResult = calculateNTFPBreakEvenPrice();
+            
+            if (breakEvenResult && breakEvenResult.hasNTFP) {
+                if (breakEvenResult.price > 0) {
+                    const direction = npv < 0 ? '↑' : '↓';
+                    const explanation = npv < 0 ? 'min. for profit' : 'max. while profitable';
+                    document.getElementById('breakevenValue').innerHTML = 
+                        `${direction} $${breakEvenResult.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}<br><small style="font-size: 0.7em; opacity: 0.8;">${explanation}</small>`;
+                } else {
+                    // Negative break-even price means the project is profitable even with NTFP price = 0
+                    document.getElementById('breakevenValue').innerHTML = '✓ Profitable<br><small style="font-size: 0.7em; opacity: 0.8;">without NTFP</small>';
+                }
+            } else {
+                document.getElementById('breakevenValue').innerHTML = 'No NTFP<br><small style="font-size: 0.7em; opacity: 0.8;">in this model</small>';
+            }
+
+            // Calculate Carbon Break-Even Price
+            const carbonBreakEvenResult = calculateCarbonBreakEvenPrice();
+            
+            if (carbonBreakEvenResult && carbonBreakEvenResult.hasCarbon) {
+                if (carbonBreakEvenResult.profitable) {
+                    // Model is already profitable without carbon
+                    document.getElementById('carbonBreakevenValue').innerHTML = '✓ Profitable<br><small style="font-size: 0.7em; opacity: 0.8;">without carbon</small>';
+                } else if (carbonBreakEvenResult.price !== undefined) {
+                    // Found a break-even price
+                    const direction = '↑'; // Always up arrow since we need at least this price
+                    let explanation = 'min. for profit';
+                    let priceDisplay = carbonBreakEvenResult.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                    
+                    // Add indicator for unrealistically high prices
+                    if (carbonBreakEvenResult.price > 1000) {
+                        explanation = 'very high price';
+                        // For very high prices, show in scientific notation or rounded
+                        if (carbonBreakEvenResult.price > 10000) {
+                            priceDisplay = '$' + (carbonBreakEvenResult.price / 1000).toFixed(1) + 'k';
+                        }
+                    }
+                    
+                    document.getElementById('carbonBreakevenValue').innerHTML = 
+                        `${direction} ${priceDisplay}<br><small style="font-size: 0.7em; opacity: 0.8;">${explanation}</small>`;
+                } else {
+                    // No break-even possible
+                    document.getElementById('carbonBreakevenValue').innerHTML = '✗ No break-even<br><small style="font-size: 0.7em; opacity: 0.8;">possible</small>';
+                }
+            } else {
+                document.getElementById('carbonBreakevenValue').innerHTML = 'No Carbon<br><small style="font-size: 0.7em; opacity: 0.8;">in this model</small>';
+            }
+        }
+
+        function clearChart() {
+            if (chart) {
+                chart.destroy();
+                chart = null;
+            }
+        }
+
+        function clearIndicators() {
+            document.getElementById('npvValue').textContent = '$0';
+            document.getElementById('irrValue').textContent = '0%';
+            document.getElementById('bcrValue').textContent = '0.00';
+            document.getElementById('breakevenValue').innerHTML = '$0.00<br><small style="font-size: 0.7em; opacity: 0.8;">break-even</small>';
+            document.getElementById('carbonBreakevenValue').innerHTML = '$0.00<br><small style="font-size: 0.7em; opacity: 0.8;">break-even</small>';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('error');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
