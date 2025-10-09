@@ -737,11 +737,6 @@
                     <div class="indicator-value" id="breakevenValue">$0.00</div>
                     <div class="indicator-label">NTFP Break-Even Price</div>
                 </div>
-                
-                <div class="indicator-card breakeven" title="Carbon Break-Even Analysis: Shows the USD price per tCO2 that makes NPV = 0. Uses iterative bisection method to find the exact price. When NPV is already positive without carbon, no break-even exists.">
-                    <div class="indicator-value" id="carbonBreakevenValue">$0.00</div>
-                    <div class="indicator-label">Carbon Break-Even Price</div>
-                </div>
             </div>
         </div>
 
@@ -1055,169 +1050,7 @@
             };
         }
 
-        // Function to calculate Carbon break-even price using iterative bisection method
-        function calculateCarbonBreakEvenPrice() {
-            if (!selectedModel || !selectedModel.cash_flow) return null;
-            
-            // First, check if model has carbon
-            let hasCarbon = false;
-            selectedModel.cash_flow.forEach(item => {
-                if (item.carbon_details && item.carbon_details.quantity) {
-                    hasCarbon = true;
-                }
-            });
-            
-            if (!hasCarbon) {
-                return { hasCarbon: false, message: "No carbon in this model" };
-            }
-            
-            // Calculate NPV without carbon to check if project is already profitable
-            const originalCarbonPrice = carbonPrice;
-            const originalIncludeCarbon = includeCarbon;
-            
-            // Temporarily disable carbon to get NPV without carbon
-            includeCarbon = false;
-            const npvWithoutCarbon = calculateNPVForPrice(0);
-            
-            // Restore original settings
-            includeCarbon = originalIncludeCarbon;
-            
-            // If NPV is already positive without carbon, no break-even exists
-            if (npvWithoutCarbon > 0) {
-                return { 
-                    hasCarbon: true, 
-                    profitable: true, 
-                    npvWithoutCarbon: npvWithoutCarbon,
-                    message: "Already profitable without carbon" 
-                };
-            }
-            
-            // Use bisection method to find break-even carbon price
-            let minPrice = 0;
-            let maxPrice = 1000; // Start with reasonable upper bound
-            const tolerance = 0.01; // $0.01 tolerance
-            const maxIterations = 50;
-            let iterations = 0;
-            
-            // First, find a reasonable upper bound where NPV becomes positive
-            // Increase the search limit to handle models with low carbon/high costs ratios
-            while (calculateNPVForCarbonPrice(maxPrice) <= 0 && maxPrice < 50000) {
-                maxPrice *= 2;
-            }
-            
-            // If even at very high price NPV is still negative, return no solution
-            if (calculateNPVForCarbonPrice(maxPrice) <= 0) {
-                return { 
-                    hasCarbon: true, 
-                    profitable: false, 
-                    message: "No break-even possible" 
-                };
-            }
-            
-            // Bisection method
-            while (iterations < maxIterations && (maxPrice - minPrice) > tolerance) {
-                const midPrice = (minPrice + maxPrice) / 2;
-                const npvAtMid = calculateNPVForCarbonPrice(midPrice);
-                
-                if (Math.abs(npvAtMid) < 0.1) { // Found break-even within $0.10
-                    return {
-                        hasCarbon: true,
-                        profitable: false,
-                        price: midPrice,
-                        npv: npvAtMid,
-                        iterations: iterations
-                    };
-                }
-                
-                if (npvAtMid < 0) {
-                    minPrice = midPrice; // Need higher carbon price
-                } else {
-                    maxPrice = midPrice; // Can use lower carbon price
-                }
-                
-                iterations++;
-            }
-            
-            // Return the final approximation
-            const finalPrice = (minPrice + maxPrice) / 2;
-            return {
-                hasCarbon: true,
-                profitable: false,
-                price: finalPrice,
-                npv: calculateNPVForCarbonPrice(finalPrice),
-                iterations: iterations
-            };
-        }
-        
-        // Helper function to calculate NPV for a specific carbon price
-        function calculateNPVForCarbonPrice(testCarbonPrice) {
-            const rate = discountRate / 100;
-            let npv = 0;
-            
-            selectedModel.cash_flow.forEach((item, index) => {
-                // Calculate carbon value with test price
-                const carbonValue = calculateDynamicCarbonValueWithPrice(item, item.year - 1, testCarbonPrice);
-                const densityAdjustedBenefits = calculateDensityAdjustedBenefits(item, item.year - 1);
-                const densityAdjustedCosts = calculateDensityAdjustedCosts(item);
-                const totalNet = (densityAdjustedBenefits + carbonValue) - densityAdjustedCosts;
-                
-                if (index === 0) {
-                    npv += totalNet; // No discounting for first year
-                } else {
-                    npv += totalNet / Math.pow(1 + rate, index);
-                }
-            });
-            
-            // Convert to USD if needed
-            if (selectedModel.currency === 'Real') {
-                npv = npv / exchangeRates['BRL'];
-            } else if (selectedModel.currency === 'Naira') {
-                npv = npv / exchangeRates['NGN'];
-            }
-            
-            return npv;
-        }
-        
-        // Helper function to calculate NPV for any price (used for no-carbon calculation)
-        function calculateNPVForPrice(testPrice) {
-            const rate = discountRate / 100;
-            let npv = 0;
-            
-            selectedModel.cash_flow.forEach((item, index) => {
-                const densityAdjustedBenefits = calculateDensityAdjustedBenefits(item, item.year - 1);
-                const densityAdjustedCosts = calculateDensityAdjustedCosts(item);
-                const totalNet = densityAdjustedBenefits - densityAdjustedCosts;
-                
-                if (index === 0) {
-                    npv += totalNet; // No discounting for first year
-                } else {
-                    npv += totalNet / Math.pow(1 + rate, index);
-                }
-            });
-            
-            // Convert to USD if needed
-            if (selectedModel.currency === 'Real') {
-                npv = npv / exchangeRates['BRL'];
-            } else if (selectedModel.currency === 'Naira') {
-                npv = npv / exchangeRates['NGN'];
-            }
-            
-            return npv;
-        }
-        
-        // Helper function to calculate carbon value with a specific price (similar to calculateDynamicCarbonValue)
-        function calculateDynamicCarbonValueWithPrice(item, year = null, testPrice) {
-            if (!item.carbon_details) return 0;
-            
-            // Calculate dynamic carbon price with growth
-            const growthRate = carbonGrowthRate / 100;
-            const yearIndex = year !== null ? year : (item.year - 1);
-            const dynamicPriceWithGrowth = testPrice * Math.pow(1 + growthRate, yearIndex);
-            
-            const dynamicValue = item.carbon_details.quantity * dynamicPriceWithGrowth;
-            
-            return dynamicValue;
-        }
+
 
         // Helper function to get original USD price for a product
         function getOriginalUSDPrice(benefit) {
@@ -1914,37 +1747,7 @@
                 document.getElementById('breakevenValue').innerHTML = 'No NTFP<br><small style="font-size: 0.7em; opacity: 0.8;">in this model</small>';
             }
 
-            // Calculate Carbon Break-Even Price
-            const carbonBreakEvenResult = calculateCarbonBreakEvenPrice();
-            
-            if (carbonBreakEvenResult && carbonBreakEvenResult.hasCarbon) {
-                if (carbonBreakEvenResult.profitable) {
-                    // Model is already profitable without carbon
-                    document.getElementById('carbonBreakevenValue').innerHTML = '✓ Profitable<br><small style="font-size: 0.7em; opacity: 0.8;">without carbon</small>';
-                } else if (carbonBreakEvenResult.price !== undefined) {
-                    // Found a break-even price
-                    const direction = '↑'; // Always up arrow since we need at least this price
-                    let explanation = 'min. for profit';
-                    let priceDisplay = carbonBreakEvenResult.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-                    
-                    // Add indicator for unrealistically high prices
-                    if (carbonBreakEvenResult.price > 1000) {
-                        explanation = 'very high price';
-                        // For very high prices, show in scientific notation or rounded
-                        if (carbonBreakEvenResult.price > 10000) {
-                            priceDisplay = '$' + (carbonBreakEvenResult.price / 1000).toFixed(1) + 'k';
-                        }
-                    }
-                    
-                    document.getElementById('carbonBreakevenValue').innerHTML = 
-                        `${direction} ${priceDisplay}<br><small style="font-size: 0.7em; opacity: 0.8;">${explanation}</small>`;
-                } else {
-                    // No break-even possible
-                    document.getElementById('carbonBreakevenValue').innerHTML = '✗ No break-even<br><small style="font-size: 0.7em; opacity: 0.8;">possible</small>';
-                }
-            } else {
-                document.getElementById('carbonBreakevenValue').innerHTML = 'No Carbon<br><small style="font-size: 0.7em; opacity: 0.8;">in this model</small>';
-            }
+
         }
 
         function clearChart() {
@@ -1959,7 +1762,6 @@
             document.getElementById('irrValue').textContent = '0%';
             document.getElementById('bcrValue').textContent = '0.00';
             document.getElementById('breakevenValue').innerHTML = '$0.00<br><small style="font-size: 0.7em; opacity: 0.8;">break-even</small>';
-            document.getElementById('carbonBreakevenValue').innerHTML = '$0.00<br><small style="font-size: 0.7em; opacity: 0.8;">break-even</small>';
         }
 
         function hideLoading() {
