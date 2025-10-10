@@ -46,7 +46,9 @@
         }
 
         .header {
-            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 2rem;
             margin-bottom: 3rem;
             background: var(--card-bg);
             padding: 2rem;
@@ -55,6 +57,32 @@
             border: 1px solid var(--border-color);
             position: relative;
             overflow: hidden;
+        }
+
+        .header-content {
+            flex: 1;
+            text-align: center;
+        }
+
+        .header-logo {
+            flex-shrink: 0;
+            height: 120px;
+        }
+
+        .header-logo a {
+            display: block;
+            height: 100%;
+        }
+
+        .header-logo img {
+            height: 100%;
+            width: auto;
+            cursor: pointer;
+            transition: opacity 0.3s ease;
+        }
+
+        .header-logo img:hover {
+            opacity: 0.8;
         }
 
         .header::before {
@@ -631,8 +659,15 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>ANR Cost-Benefit Analysis</h1>
-            <p class="subtitle">Interactive Analysis Dashboard for Assisted Natural Regeneration (ANR) Models</p>
+            <div class="header-logo">
+                <a href="https://www.conservation-strategy.org/" target="_blank" rel="noopener noreferrer">
+                    <img src="CSF logo black.png" alt="Conservation Strategy Fund" />
+                </a>
+            </div>
+            <div class="header-content">
+                <h1>ANR Cost-Benefit Analysis</h1>
+                <p class="subtitle">Interactive Analysis Dashboard for Assisted Natural Regeneration (ANR) Models</p>
+            </div>
         </div>
 
         <div class="controls-section">
@@ -720,7 +755,7 @@
                 
                 <div class="indicator-card npv">
                     <div class="indicator-value" id="npvValue">$0</div>
-                    <div class="indicator-label">Net Present Value</div>
+                    <div class="indicator-label">Net Present Value (per hectare)</div>
                 </div>
                 
                 <div class="indicator-card irr">
@@ -753,10 +788,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>Developed by:</p>
-        <a href="https://www.conservation-strategy.org" target="_blank" class="logo-link">
-            <img src="CSF logo black.png" alt="Conservation Strategy Fund" />
-        </a>
+        <p>Developed by <a href="https://www.conservation-strategy.org" target="_blank" style="color: var(--primary-teal); text-decoration: none;">Conservation Strategy Fund</a></p>
     </footer>
 
     <script>
@@ -1430,7 +1462,7 @@
             });
             
             datasets.push({
-                label: 'Net Cash Flow',
+                label: 'Discounted net cash flow',
                 data: cashFlowData,
                 borderColor: chartColors.cashFlow,
                 backgroundColor: chartColors.cashFlow + '20',
@@ -1655,14 +1687,11 @@
             
             const rate = discountRate / 100;
             
-            // Calculate NPV (including carbon if enabled) with proper density adjustments
+            // Calculate NPV - SIMPLIFYED AND FIXED
             let npv = 0;
             selectedModel.cash_flow.forEach((item, index) => {
-                // Use index for discount calculation to match IRR logic (year 1 = index 0, no discount; year 2 = index 1, discount^1, etc.)
-                const carbonValue = includeCarbon ? calculateDynamicCarbonValue(item, item.year - 1) : 0;
-                const densityAdjustedBenefits = calculateDensityAdjustedBenefits(item, item.year - 1);
-                const densityAdjustedCosts = calculateDensityAdjustedCosts(item);
-                const totalNet = (densityAdjustedBenefits + carbonValue) - densityAdjustedCosts;
+                // SEMPRE use o valor net dos dados - está correto!
+                const totalNet = item.net;
                 
                 if (index === 0) {
                     npv += totalNet; // No discounting for first year (investment year)
@@ -1684,24 +1713,24 @@
                 irr = 0; // No IRR available
             }
             
-            // Calculate BCR (including carbon if enabled) with proper density adjustments
+            // Calculate BCR - SIMPLIFIED AND FIXED
             let totalBenefits = 0;
             let totalCosts = 0;
             
             selectedModel.cash_flow.forEach((item, index) => {
-                const carbonValue = includeCarbon ? calculateDynamicCarbonValue(item, item.year - 1) : 0;
-                const densityAdjustedBenefits = calculateDensityAdjustedBenefits(item, item.year - 1);
-                const densityAdjustedCosts = calculateDensityAdjustedCosts(item);
+                // SEMPRE use os valores benefits e costs dos dados - estão corretos!
+                const benefits = item.benefits || 0;
+                const costs = item.costs || 0;
                 
                 if (index === 0) {
                     // No discounting for first year
-                    totalBenefits += (densityAdjustedBenefits + carbonValue);
-                    totalCosts += densityAdjustedCosts;
+                    totalBenefits += benefits;
+                    totalCosts += costs;
                 } else {
                     // Apply discount for subsequent years
                     const discountFactor = Math.pow(1 + rate, index);
-                    totalBenefits += (densityAdjustedBenefits + carbonValue) / discountFactor;
-                    totalCosts += densityAdjustedCosts / discountFactor;
+                    totalBenefits += benefits / discountFactor;
+                    totalCosts += costs / discountFactor;
                 }
             });
             
