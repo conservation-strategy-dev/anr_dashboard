@@ -911,6 +911,39 @@
             return densityAdjustedBenefits;
         }
 
+        // Function to calculate dynamic NTFP value
+        function calculateDynamicNTFPValue(item, year = null) {
+            if (!item.benefit_details || item.benefit_details.length === 0) return 0;
+            
+            let totalValue = 0;
+            
+            item.benefit_details.forEach(benefit => {
+                if (benefit.product !== "Carbon") {  // Only NTFP products
+                    // Calculate dynamic price with growth
+                    const yearIndex = year !== null ? year : (item.year - 1);
+                    const growthFactor = Math.pow(1 + (ntfpGrowthRate / 100), yearIndex);
+                    
+                    // Use dynamic NTFP price from controls if set, otherwise use original price
+                    let dynamicPrice = ntfpPrice > 0 ? ntfpPrice : benefit.price;
+                    const dynamicPriceWithGrowth = dynamicPrice * growthFactor;
+                    
+                    // Calculate dynamic value (convert to original currency if needed)
+                    let dynamicValue = benefit.quantity * dynamicPriceWithGrowth;
+                    
+                    // Convert to local currency if needed
+                    if (selectedModel.currency === 'Real') {
+                        dynamicValue = dynamicValue * exchangeRates['BRL'];
+                    } else if (selectedModel.currency === 'Naira') {
+                        dynamicValue = dynamicValue * exchangeRates['NGN'];
+                    }
+                    
+                    totalValue += dynamicValue;
+                }
+            });
+            
+            return totalValue;
+        }
+
         // Function to calculate carbon benefits with dynamic pricing (for separate carbon calculations)
         function calculateDynamicCarbonValue(item, year = null) {
             if (!item.carbon_details) return 0;
@@ -1687,11 +1720,30 @@
             
             const rate = discountRate / 100;
             
-            // Calculate NPV - SIMPLIFYED AND FIXED
+            // Calculate NPV - INCLUDING CARBON AND DYNAMIC NTFP PRICING
             let npv = 0;
             selectedModel.cash_flow.forEach((item, index) => {
-                // SEMPRE use o valor net dos dados - está correto!
-                const totalNet = item.net;
+                // Base costs (always negative)
+                let totalCosts = item.costs || 0;
+                
+                // Dynamic NTFP benefits
+                let ntfpBenefits = 0;
+                if (ntfpPrice > 0) {
+                    // Use dynamic NTFP pricing
+                    ntfpBenefits = calculateDynamicNTFPValue(item, index);
+                } else {
+                    // Use original benefits
+                    ntfpBenefits = item.benefits || 0;
+                }
+                
+                // Carbon benefits (if enabled)
+                let carbonBenefits = 0;
+                if (includeCarbon) {
+                    carbonBenefits = calculateDynamicCarbonValue(item, index);
+                }
+                
+                // Total net cash flow
+                let totalNet = ntfpBenefits + carbonBenefits - totalCosts;
                 
                 if (index === 0) {
                     npv += totalNet; // No discounting for first year (investment year)
@@ -1742,23 +1794,41 @@
                 }
             }
             
-            // Calculate BCR - SIMPLIFIED AND FIXED
+            // Calculate BCR - INCLUDING CARBON AND DYNAMIC NTFP PRICING
             let totalBenefits = 0;
             let totalCosts = 0;
             
             selectedModel.cash_flow.forEach((item, index) => {
-                // SEMPRE use os valores benefits e costs dos dados - estão corretos!
-                const benefits = item.benefits || 0;
+                // Costs
                 const costs = item.costs || 0;
+                
+                // Dynamic NTFP benefits
+                let ntfpBenefits = 0;
+                if (ntfpPrice > 0) {
+                    // Use dynamic NTFP pricing
+                    ntfpBenefits = calculateDynamicNTFPValue(item, index);
+                } else {
+                    // Use original benefits
+                    ntfpBenefits = item.benefits || 0;
+                }
+                
+                // Carbon benefits (if enabled)
+                let carbonBenefits = 0;
+                if (includeCarbon) {
+                    carbonBenefits = calculateDynamicCarbonValue(item, index);
+                }
+                
+                // Total benefits for this year
+                const totalYearBenefits = ntfpBenefits + carbonBenefits;
                 
                 if (index === 0) {
                     // No discounting for first year
-                    totalBenefits += benefits;
+                    totalBenefits += totalYearBenefits;
                     totalCosts += costs;
                 } else {
                     // Apply discount for subsequent years
                     const discountFactor = Math.pow(1 + rate, index);
-                    totalBenefits += benefits / discountFactor;
+                    totalBenefits += totalYearBenefits / discountFactor;
                     totalCosts += costs / discountFactor;
                 }
             });

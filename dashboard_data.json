@@ -9678,875 +9678,881 @@
       "cash_flow": [
         {
           "year": 1,
-          "costs": 216.0,
-          "benefits": 0.0,
-          "carbon": 0,
-          "net": -216.0,
-          "cumulative": -216.0,
+          "costs": 1716.0,
+          "benefits": 8.0,
+          "net": -1708.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 3.2,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 8.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 216.0
+              "amount": 1716.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 0.0,
-              "value": 0.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": -1708.0
         },
         {
           "year": 2,
-          "costs": 11.0,
-          "benefits": 0.0,
-          "carbon": 0,
-          "net": -11.0,
-          "cumulative": -227.0,
+          "costs": 261.0,
+          "benefits": 20.0,
+          "net": -242.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 8.0,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 20.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 11.0
+              "amount": 261.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 0.0,
-              "value": 0.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": -1950.0
         },
         {
           "year": 3,
-          "costs": 68.0,
-          "benefits": 444.0,
-          "carbon": 0,
-          "net": 376.0,
-          "cumulative": 149.0,
+          "costs": 318.0,
+          "benefits": 472.0,
+          "net": 154.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 188.8,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 472.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 444.0,
-              "value": 444.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": -1796.0
         },
         {
           "year": 4,
-          "costs": 68.0,
-          "benefits": 740.0,
-          "carbon": 0,
-          "net": 672.0,
-          "cumulative": 821.0,
+          "costs": 318.0,
+          "benefits": 773.0,
+          "net": 454.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 309.2,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 773.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 740.0,
-              "value": 740.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": -1342.0
         },
         {
           "year": 5,
-          "costs": 68.0,
-          "benefits": 1036.0,
-          "carbon": 0,
-          "net": 968.0,
-          "cumulative": 1789.0,
+          "costs": 318.0,
+          "benefits": 1071.0,
+          "net": 753.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 428.4,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 1071.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 1036.0,
-              "value": 1036.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": -589.0
         },
         {
           "year": 6,
-          "costs": 68.0,
-          "benefits": 1480.0,
-          "carbon": 0,
-          "net": 1412.0,
-          "cumulative": 3201.0,
+          "costs": 318.0,
+          "benefits": 1516.0,
+          "net": 1198.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 606.4,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 1516.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 1480.0,
-              "value": 1480.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 609.0
         },
         {
           "year": 7,
-          "costs": 68.0,
-          "benefits": 1776.0,
-          "carbon": 0,
-          "net": 1708.0,
-          "cumulative": 4909.0,
+          "costs": 318.0,
+          "benefits": 1812.0,
+          "net": 1494.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 724.8,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 1812.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 1776.0,
-              "value": 1776.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 2103.0
         },
         {
           "year": 8,
-          "costs": 68.0,
-          "benefits": 1998.0,
-          "carbon": 0,
-          "net": 1930.0,
-          "cumulative": 6839.0,
+          "costs": 318.0,
+          "benefits": 2033.0,
+          "net": 1715.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 813.2,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2033.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 1998.0,
-              "value": 1998.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 3818.0
         },
         {
           "year": 9,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 8917.0,
+          "costs": 318.0,
+          "benefits": 2179.0,
+          "net": 1861.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 871.6,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2179.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 5679.0
         },
         {
           "year": 10,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 10995.0,
+          "costs": 318.0,
+          "benefits": 2178.0,
+          "net": 1859.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 871.2,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2178.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 7538.0
         },
         {
           "year": 11,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 13073.0,
+          "costs": 318.0,
+          "benefits": 2175.0,
+          "net": 1857.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 870.0,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2175.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 9395.0
         },
         {
           "year": 12,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 15151.0,
+          "costs": 318.0,
+          "benefits": 2173.0,
+          "net": 1855.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 869.2,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2173.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 11250.0
         },
         {
           "year": 13,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 17229.0,
+          "costs": 318.0,
+          "benefits": 2171.0,
+          "net": 1853.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 868.4,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2171.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 13103.0
         },
         {
           "year": 14,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 19307.0,
+          "costs": 318.0,
+          "benefits": 2169.0,
+          "net": 1851.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 867.6,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2169.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 14954.0
         },
         {
           "year": 15,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 21385.0,
+          "costs": 318.0,
+          "benefits": 2167.0,
+          "net": 1849.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 866.8,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2167.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 16803.0
         },
         {
           "year": 16,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 23463.0,
+          "costs": 318.0,
+          "benefits": 2165.0,
+          "net": 1847.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 866.0,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2165.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 18650.0
         },
         {
           "year": 17,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 25541.0,
+          "costs": 318.0,
+          "benefits": 2163.0,
+          "net": 1845.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 865.2,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2163.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 20495.0
         },
         {
           "year": 18,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 27619.0,
+          "costs": 318.0,
+          "benefits": 2162.0,
+          "net": 1843.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 864.8,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2162.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 22338.0
         },
         {
           "year": 19,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 29697.0,
+          "costs": 318.0,
+          "benefits": 2160.0,
+          "net": 1842.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 864.0,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2160.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 24180.0
         },
         {
           "year": 20,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 31775.0,
+          "costs": 318.0,
+          "benefits": 2159.0,
+          "net": 1840.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 863.6,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2159.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 26020.0
         },
         {
           "year": 21,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 33853.0,
+          "costs": 318.0,
+          "benefits": 2157.0,
+          "net": 1839.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 862.8,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2157.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 27859.0
         },
         {
           "year": 22,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 35931.0,
+          "costs": 318.0,
+          "benefits": 2156.0,
+          "net": 1838.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 862.4,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2156.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 29697.0
         },
         {
           "year": 23,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 38009.0,
+          "costs": 318.0,
+          "benefits": 2155.0,
+          "net": 1837.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 862.0,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2155.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 31534.0
         },
         {
           "year": 24,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 40087.0,
+          "costs": 318.0,
+          "benefits": 2154.0,
+          "net": 1836.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 861.6,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2154.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 33370.0
         },
         {
           "year": 25,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 42165.0,
+          "costs": 318.0,
+          "benefits": 2153.0,
+          "net": 1835.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 861.2,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2153.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 35205.0
         },
         {
           "year": 26,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 44243.0,
+          "costs": 318.0,
+          "benefits": 2152.0,
+          "net": 1834.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 860.8,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2152.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 37039.0
         },
         {
           "year": 27,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 46321.0,
+          "costs": 318.0,
+          "benefits": 2152.0,
+          "net": 1834.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 860.8,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2152.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 38873.0
         },
         {
           "year": 28,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 48399.0,
+          "costs": 523.0,
+          "benefits": 2151.0,
+          "net": 1628.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 860.4,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2151.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 523.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 40501.0
         },
         {
           "year": 29,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 50477.0,
+          "costs": 318.0,
+          "benefits": 2151.0,
+          "net": 1832.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 860.4,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2151.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 42333.0
         },
         {
           "year": 30,
-          "costs": 68.0,
-          "benefits": 2146.0,
-          "carbon": 0,
-          "net": 2078.0,
-          "cumulative": 52555.0,
+          "costs": 318.0,
+          "benefits": 2150.0,
+          "net": 1832.0,
+          "carbon": 0.0,
+          "carbon_details": {
+            "quantity": 7.3033,
+            "unit": "tCO2/ha/year",
+            "price": 6.0,
+            "value": 43.8198
+          },
+          "benefit_details": [
+            {
+              "product": "Ilex paraguariensis (Yerba mate)",
+              "quantity": 860.0,
+              "unit": "kg/ha",
+              "price": 2.5,
+              "value": 2150.0
+            }
+          ],
           "cost_details": [
             {
               "category": "Total Costs",
-              "amount": 68.0
+              "amount": 318.0
             }
           ],
-          "benefit_details": [
-            {
-              "product": "Yerba Mate",
-              "quantity": 1.0,
-              "unit": "ha",
-              "price": 2146.0,
-              "value": 2146.0
-            }
-          ],
-          "carbon_details": {
-            "quantity": 0,
-            "unit": "tCO2/ha/year",
-            "price": 6.0,
-            "value": 0
-          }
+          "cumulative": 44165.0
         }
-      ]
+      ],
+      "indicators": {
+        "npv": 3963.0,
+        "irr": 34.8,
+        "bcr": 6.1,
+        "payback": 6
+      }
     },
     {
       "id": 50,
