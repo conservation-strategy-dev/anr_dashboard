@@ -835,8 +835,8 @@
         
         // Exchange rates (PPP - World Bank) for currency conversion
         const exchangeRates = {
-            "BRL": 2.48, // Brazilian Real to USD (PPP)
-            "NGN": 223.5  // Nigerian Naira to USD (PPP)
+            "BRL": 5.20, // Brazilian Real to USD (PPP-adjusted)
+            "NGN": 1650.0  // Nigerian Naira to USD (PPP-adjusted)
         };
         
         // Function to calculate density-adjusted costs for a cash flow item
@@ -1723,23 +1723,23 @@
             // Calculate NPV - INCLUDING CARBON AND DYNAMIC NTFP PRICING
             let npv = 0;
             selectedModel.cash_flow.forEach((item, index) => {
-                // Base costs (always negative)
+                // Base costs (already in USD in dashboard_data.json)
                 let totalCosts = item.costs || 0;
                 
-                // Dynamic NTFP benefits
+                // Dynamic NTFP benefits (already in USD in dashboard_data.json)
                 let ntfpBenefits = 0;
                 if (ntfpPrice > 0) {
                     // Use dynamic NTFP pricing
                     ntfpBenefits = calculateDynamicNTFPValue(item, index);
                 } else {
-                    // Use original benefits
+                    // Use original benefits (already in USD)
                     ntfpBenefits = item.benefits || 0;
                 }
                 
-                // Carbon benefits (if enabled)
+                // Carbon benefits (if enabled) - already in USD in dashboard_data.json
                 let carbonBenefits = 0;
                 if (includeCarbon) {
-                    carbonBenefits = calculateDynamicCarbonValue(item, index);
+                    carbonBenefits = item.carbon || 0;
                 }
                 
                 // Total net cash flow
@@ -1752,12 +1752,7 @@
                 }
             });
             
-            // Convert to USD if model is in different currency
-            if (selectedModel.currency === 'Real') {
-                npv = npv / exchangeRates['BRL'];
-            } else if (selectedModel.currency === 'Naira') {
-                npv = npv / exchangeRates['NGN'];
-            }
+            // NO CURRENCY CONVERSION - values are already in USD from dashboard_data.json
             
             // Calculate IRR dynamically based on current density and carbon settings
             let irr = calculateDynamicIRR(selectedModel.cash_flow, includeCarbon);
@@ -1802,20 +1797,20 @@
                 // Costs
                 const costs = item.costs || 0;
                 
-                // Dynamic NTFP benefits
+                // Dynamic NTFP benefits (already in USD)
                 let ntfpBenefits = 0;
                 if (ntfpPrice > 0) {
                     // Use dynamic NTFP pricing
                     ntfpBenefits = calculateDynamicNTFPValue(item, index);
                 } else {
-                    // Use original benefits
+                    // Use original benefits (already in USD)
                     ntfpBenefits = item.benefits || 0;
                 }
                 
-                // Carbon benefits (if enabled)
+                // Carbon benefits (if enabled) - already in USD
                 let carbonBenefits = 0;
                 if (includeCarbon) {
-                    carbonBenefits = calculateDynamicCarbonValue(item, index);
+                    carbonBenefits = item.carbon || 0;
                 }
                 
                 // Total benefits for this year
@@ -1833,14 +1828,7 @@
                 }
             });
             
-            // Convert to USD if model is in different currency (BCR is a ratio, so both numerator and denominator are converted equally)
-            if (selectedModel.currency === 'Real') {
-                totalBenefits = totalBenefits / exchangeRates['BRL'];
-                totalCosts = totalCosts / exchangeRates['BRL'];
-            } else if (selectedModel.currency === 'Naira') {
-                totalBenefits = totalBenefits / exchangeRates['NGN'];
-                totalCosts = totalCosts / exchangeRates['NGN'];
-            }
+            // NO CURRENCY CONVERSION - values are already in USD from dashboard_data.json
             
             const bcr = totalCosts > 0 ? totalBenefits / totalCosts : 0;
             
